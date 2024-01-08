@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:tut_app/data/mapper/mapper.dart';
 import 'package:tut_app/data/network/error_handler.dart';
@@ -41,21 +43,19 @@ import '../data_source/remote_data_source.dart';
 // }
 
 class RepositoryImpl extends Repository {
-  RemoteDataSource _remoteDataSource;
-  NetworkInfo _networkInfo;
+  final RemoteDataSource _remoteDataSource;
+  final NetworkInfo _networkInfo;
   RepositoryImpl(this._remoteDataSource, this._networkInfo,);
 
   @override
-  Future<Either<Failure, Authentication>> login(
-
-      LoginRequest loginRequest) async {
+  Future<Either<Failure, Authentication>> login (LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
 
       try {
         // its safe to call the API
         final response = await _remoteDataSource.login(loginRequest);
 
-        if (response.status == ApiInternalStatus.sucCess) // success
+        if ( response.status == ApiInternalStatus.sucCess) // success
             {
           // return data (success)
           // return right
@@ -69,6 +69,7 @@ class RepositoryImpl extends Repository {
           );
         }
       } catch (error) {
+        print('Error during login: $error');
         return (Left(ErrorHandler.handle(error).failure));
       }
     } else {

@@ -99,7 +99,7 @@ class ContactsResponse {
   ContactsResponse(this.email, this.phone, this.link);
 
 // from json
-  factory ContactsResponse.fromJson(Map<String, dynamic> json) =>
+  factory ContactsResponse.fromJson( Map<String, dynamic> json) =>
       _$ContactsResponseFromJson(json);
 
 // to json

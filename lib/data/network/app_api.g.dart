@@ -34,7 +34,7 @@ class _AppServiceClient implements AppServiceClient {
                 .compose(_dio.options, '/customers/login',
                 queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AuthenticationResponse.fromJson(_result.data!);
+    final value = AuthenticationResponse.fromJson((_result.data!));
     return value;
   }
 

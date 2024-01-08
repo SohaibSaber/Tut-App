@@ -44,27 +44,11 @@ class ErrorHandler implements Exception {
         return DataSource.badRequest.getFailure();
 
       case DioExceptionType.badResponse:
-        switch (error.response?.statusCode){
-          case ResponseCode.badRequest:
-            return DataSource.badRequest.getFailure();
-          case ResponseCode.forbidden:
-            return DataSource.forbidden.getFailure();
-          case ResponseCode.unAuthorised:
-            return DataSource.unAuthorised.getFailure();
-          case ResponseCode.notFound:
-            return DataSource.notFound.getFailure();
-          case ResponseCode.internalServerError:
-            return DataSource.internalServerError.getFailure();
-          default:
-            return DataSource.success.getFailure();
-        }
-
+        return DataSource.badRequest.getFailure();
       case DioExceptionType.cancel:
         return DataSource.cancel.getFailure();
-
       case DioExceptionType.connectionError:
         return DataSource.internalServerError.getFailure();
-
       case DioExceptionType.unknown:
         return DataSource.deFault.getFailure();
     }

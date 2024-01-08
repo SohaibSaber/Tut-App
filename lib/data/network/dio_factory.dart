@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -17,14 +19,16 @@ class DioFactory {
 
   Future<Dio> getDio() async {
     Dio dio = Dio();
-    Duration timeOut = const Duration(minutes: 1);
+    Duration timeOut = const Duration(minutes: 2);
     String language = await _appPreferences.getAppLanguage();
-    Map<String, String> headers = {
+    Map<String, dynamic> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
       AUTHORIZATION: Constant.token,
       DEFAULT_LANGUAGE: language
     };
+
+    dio.interceptors.add(JsonResponseInterceptor());
 
     dio.options = BaseOptions(
         baseUrl: Constant.baseUrl,
@@ -43,5 +47,13 @@ class DioFactory {
     }
 
     return dio;
+  }
+}
+
+class JsonResponseInterceptor extends Interceptor {
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    response.data = json.decode(response.data);
+    super.onResponse(response, handler);
   }
 }
